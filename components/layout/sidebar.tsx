@@ -1,0 +1,68 @@
+'use client'
+
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { cn } from '@/lib/utils'
+import { 
+  LayoutDashboard, 
+  Users, 
+  BedDouble, 
+  ClipboardPlus, 
+  Package, 
+  Activity 
+} from 'lucide-react'
+
+const navigation = [
+  { name: 'Dashboard', href: '/', icon: LayoutDashboard },
+  { name: 'OPD Queue', href: '/opd', icon: Users },
+  { name: 'Bed Management', href: '/beds', icon: BedDouble },
+  { name: 'Admissions', href: '/admissions', icon: ClipboardPlus },
+  { name: 'Inventory', href: '/inventory', icon: Package },
+  { name: 'Live Metrics', href: '/metrics', icon: Activity },
+]
+
+export function Sidebar() {
+  const pathname = usePathname()
+
+  return (
+    <div className="flex h-full w-64 flex-col border-r border-border bg-white">
+      <div className="flex h-16 items-center border-b border-border px-6">
+        <h1 className="text-xl font-semibold font-serif text-foreground">Hospital Operations</h1>
+      </div>
+      
+      <nav className="flex-1 space-y-1 p-4">
+        {navigation.map((item) => {
+          const Icon = item.icon
+          const isActive = pathname === item.href
+          
+          return (
+            <Link
+              key={item.name}
+              href={item.href}
+              className={cn(
+                'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+                isActive
+                  ? 'bg-primary text-white'
+                  : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+              )}
+            >
+              <Icon className="h-5 w-5" />
+              {item.name}
+            </Link>
+          )
+        })}
+      </nav>
+
+      <div className="border-t border-border p-4">
+        <div className="rounded-lg bg-blue-50 p-3">
+          <p className="text-xs font-medium text-blue-900">
+            City Health Integration
+          </p>
+          <p className="mt-1 text-xs text-blue-600">
+            API endpoints active
+          </p>
+        </div>
+      </div>
+    </div>
+  )
+}
